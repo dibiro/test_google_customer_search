@@ -1,5 +1,6 @@
 export const SERVER = 'http://142.93.85.147'
-export const APPNAME = 'leopoldo montesinos'
+export const APPNAME = 'Reporte Clientes'
+export const GOOGLE_API_KEY_CUSTOMER_SEARCH = 'AIzaSyCufgKw8sgum1WXlaneArbXLi4hHEBavMQ'
 
 export function isFunction (functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
