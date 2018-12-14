@@ -92,7 +92,7 @@ class  NavBar extends React.Component {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" color="inherit" noWrap>
-                Leopoldo Montesinos
+                Consulta Clientes
               </Typography>
             </Toolbar>
           </AppBar>

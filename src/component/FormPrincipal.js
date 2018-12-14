@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux'
+import { getQuery } from '../redux/actions/queryActions'
+
 
 const styles = theme => ({
   container: {
@@ -50,7 +53,7 @@ class FormPrincipal extends React.Component {
     firt_name: '',
     second_name: '',
     last_name: '',
-
+    etiqueta:''
   };
 
   handleChange = name => event => {
@@ -59,8 +62,14 @@ class FormPrincipal extends React.Component {
     });
   };
 
+  getQuery = event => {
+    const { firt_name, second_name, last_name, etiqueta } = this.state
+    console.log(firt_name, second_name, last_name, etiqueta)
+    this.props.getQuery(`${firt_name} ${second_name} ${last_name} ${etiqueta}`)
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, query } = this.props;
 
     return (
       <form className={classes.container} noValidate autoComplete="off">
@@ -91,9 +100,19 @@ class FormPrincipal extends React.Component {
           margin="normal"
           variant="outlined"
         />
-        <Button variant="contained" color="primary" className={classes.button}>
+        <TextField
+          id="outlined-name"
+          label="Etiqueta"
+          className={classes.textField}
+          value={this.state.tag}
+          onChange={this.handleChange('tag')}
+          margin="normal"
+          variant="outlined"
+        />
+        <Button variant="contained" color="primary" className={classes.button} onClick={this.getQuery}>
           Consultar
         </Button>
+        {JSON.stringify(query)}
       </form>
     );
   }
@@ -103,4 +122,8 @@ FormPrincipal.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FormPrincipal);
+export default connect((state) => ({
+  query: state.query.query,
+  openDrawer: state.controler.openDrawer,
+  translate: state.translate.translate,
+}), {getQuery})(withStyles(styles, { withTheme: true })(FormPrincipal));
