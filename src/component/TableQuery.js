@@ -12,24 +12,24 @@ import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '90%',
+    marginLeft: '5%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
-    padingLeft: '70px',
-    padingRight: '70px',
+    overflowX: 'hiden',
   },
 });
 
 
 function TableQuery(props) {
   const { classes, query } = props;
-  const rows = query.items
+  const rows = query && query.query && query.query.items ? query.query.items : []
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
+          <h1>{query.fullText}</h1>
           <TableRow>
-            <TableCell>Lisk</TableCell>
+            <TableCell>Link</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

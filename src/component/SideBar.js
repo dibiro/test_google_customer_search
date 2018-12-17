@@ -8,12 +8,13 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import { connect } from 'react-redux'
 import { toggleModalOpenDrawer } from '../redux/actions/controlerActions'
+import { jutSetQuery } from '../redux/actions/queryActions'
+import TextField from '@material-ui/core/TextField';
+import { isBlank } from '../lib/Utils'
+
 
 const drawerWidth = 240;
 
@@ -76,9 +77,31 @@ const styles = theme => ({
 });
 
 class  SideBar extends React.Component {
+  state = {
+    buscar: '',
+  };
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+  handleClickList = query => event => {
+    this.props.jutSetQuery(query)
+    this.props.toggleModalOpenDrawer()
+    this.setState({
+      buscar: ''
+    });
+  };
+
   render (){
-    const { classes, theme, openDrawer, toggleModalOpenDrawer } = this.props;
-  
+    let { classes, theme, openDrawer, toggleModalOpenDrawer, querys } = this.props;
+    let { buscar } = this.state;
+    if (!isBlank(buscar)){
+      querys = querys.filter(function(query) {
+
+        return query.fullName.toUpperCase().indexOf(buscar.toUpperCase()) > -1
+      })
+    }
     return (
         <Drawer
           className={classes.drawer}
@@ -94,22 +117,26 @@ class  SideBar extends React.Component {
               {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
           </div>
+          <div className={classes.drawerHeader}>
+            Clientes Consultados
+          </div>
+          <div className={classes.drawerHeader}>
+            <TextField
+              id="outlined-name"
+              label="Buscar"
+              className={classes.textField}
+              value={this.state.buscar}
+              onChange={this.handleChange('buscar')}
+              margin="normal"
+              variant="outlined"
+            />
+          </div>
           <Divider />
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
+            {querys && querys.map && querys.map((text, index) => (
+                <ListItem button key={text.id} onClick={this.handleClickList(text)}>
+                    <ListItemText primary={text.fullName} />
                 </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
             ))}
           </List>
         </Drawer>
@@ -124,5 +151,6 @@ SideBar.propTypes = {
 
 export default connect((state) => ({
     openDrawer: state.controler.openDrawer,
+    querys: state.query.querys,
     translate: state.translate.translate,
-  }), {toggleModalOpenDrawer})(withStyles(styles, { withTheme: true })(SideBar));
+  }), {toggleModalOpenDrawer, jutSetQuery})(withStyles(styles, { withTheme: true })(SideBar));

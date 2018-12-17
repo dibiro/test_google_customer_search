@@ -1,11 +1,13 @@
 import { APPNAME } from '../../lib/Utils'
 export const GET_QUERY = APPNAME + '/query/GET_QUERY'
+export const SET_QUERYS = APPNAME + '/query/SET_QUERYS'
 export const REQUESTS = APPNAME + '/query/REQUESTS'
 export const FAIL = APPNAME + '/query/FAIL'
 export const SUCCESS = APPNAME + '/query/SUCCESS'
 
 const initialStates = {
   query: {},
+  querys: [],
   success: false,
   fail: false,
   loading: false
@@ -13,6 +15,12 @@ const initialStates = {
 
 export default function reducer (state = initialStates, action) {
   switch (action.type) {
+    case SET_QUERYS:
+      return {
+        ...state,
+        querys: action.querys
+      }
+      break;
     case GET_QUERY:
       return {
         ...state,

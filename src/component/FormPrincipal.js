@@ -5,15 +5,14 @@ import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux'
 import { getQuery } from '../redux/actions/queryActions'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Fab from '@material-ui/core/Fab';
-import CheckIcon from '@material-ui/icons/Check';
-import SaveIcon from '@material-ui/icons/Save';
 import classNames from 'classnames';
 import green from '@material-ui/core/colors/green';
 import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   container: {
+    width: '90%',
+    marginLeft: '5%',
     marginTop: '70px',
     display: 'flex',
     flexWrap: 'wrap',
@@ -29,8 +28,11 @@ const styles = theme => ({
     width: 200,
   },
   button: {
-    marginBottom: '9px',
-    marginTop: '16px',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -6,
+    marginLeft: -6,
   },
   wrapper: {
     margin: theme.spacing.unit,
@@ -56,8 +58,8 @@ const styles = theme => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
+    marginTop: -6,
+    marginLeft: -6,
   },
 });
 
@@ -78,7 +80,15 @@ class FormPrincipal extends React.Component {
 
   getQuery = event => {
     const { firt_name, second_name, last_name, tag } = this.state
-    this.props.getQuery(`${firt_name} ${second_name} ${last_name} ${tag}`)
+    let query = {
+      firt_name,
+      second_name,
+      last_name,
+      tag,
+      fullText: `${firt_name} ${second_name} ${last_name} ${tag}`,
+      fullName: `${firt_name} ${second_name} ${last_name}`,
+    }
+    this.props.getQuery(query)
   };
 
   render() {

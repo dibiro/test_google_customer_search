@@ -1,7 +1,7 @@
 export const SERVER = 'http://142.93.85.147'
 export const APPNAME = 'Reporte Clientes'
 export const GOOGLE_API_KEY_CUSTOMER_SEARCH = 'AIzaSyCufgKw8sgum1WXlaneArbXLi4hHEBavMQ'
-export const URL_CUSTOMER_SEARCH = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyCufgKw8sgum1WXlaneArbXLi4hHEBavMQ&cx=017576662512468239146:omuauf_lfve'
+export const URL_CUSTOMER_SEARCH = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyCufgKw8sgum1WXlaneArbXLi4hHEBavMQ&cx=001369151350146230978:cjcrkqwqprk'
 
 export function isFunction (functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
