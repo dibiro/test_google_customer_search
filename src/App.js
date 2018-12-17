@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './component/NavBar';
 import SideBar from './component/SideBar';
+import TableQuery from './component/TableQuery';
 import FormPrincipal from './component/FormPrincipal';
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor } from './redux/store'
@@ -17,6 +18,7 @@ class App extends Component {
             <Navbar />
             <SideBar />
             <FormPrincipal />
+            <TableQuery />
           </div>
         </PersistGate>
       </Provider>

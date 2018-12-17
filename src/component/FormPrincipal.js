@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
 import { getQuery } from '../redux/actions/queryActions'
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
+import CheckIcon from '@material-ui/icons/Check';
+import SaveIcon from '@material-ui/icons/Save';
+import classNames from 'classnames';
+import green from '@material-ui/core/colors/green';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   container: {
@@ -26,34 +31,43 @@ const styles = theme => ({
   button: {
     marginBottom: '9px',
     marginTop: '16px',
-  }
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: 'relative',
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
+    marginBottom: '9px',
+    marginTop: '16px',
+  },
+  fabProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: -6,
+    left: -6,
+    zIndex: 1,
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 });
 
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
-  },
-  {
-    value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-];
 
 class FormPrincipal extends React.Component {
   state = {
     firt_name: '',
     second_name: '',
     last_name: '',
-    etiqueta:''
+    tag:''
   };
 
   handleChange = name => event => {
@@ -63,13 +77,15 @@ class FormPrincipal extends React.Component {
   };
 
   getQuery = event => {
-    const { firt_name, second_name, last_name, etiqueta } = this.state
-    console.log(firt_name, second_name, last_name, etiqueta)
-    this.props.getQuery(`${firt_name} ${second_name} ${last_name} ${etiqueta}`)
+    const { firt_name, second_name, last_name, tag } = this.state
+    this.props.getQuery(`${firt_name} ${second_name} ${last_name} ${tag}`)
   };
 
   render() {
-    const { classes, query } = this.props;
+    const { classes, query, success, fail, loading } = this.props;
+    const buttonClassname = classNames({
+      [classes.buttonSuccess]: success,
+    });
 
     return (
       <form className={classes.container} noValidate autoComplete="off">
@@ -109,10 +125,18 @@ class FormPrincipal extends React.Component {
           margin="normal"
           variant="outlined"
         />
-        <Button variant="contained" color="primary" className={classes.button} onClick={this.getQuery}>
-          Consultar
-        </Button>
-        {JSON.stringify(query)}
+        <div className={classes.wrapper}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={buttonClassname}
+            disabled={loading}
+            onClick={this.getQuery}
+          >
+            Consultar
+          </Button>
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+        </div>
       </form>
     );
   }
@@ -124,6 +148,9 @@ FormPrincipal.propTypes = {
 
 export default connect((state) => ({
   query: state.query.query,
+  success: state.query.success,
+  fail: state.query.fail,
+  loading: state.query.loading,
   openDrawer: state.controler.openDrawer,
   translate: state.translate.translate,
 }), {getQuery})(withStyles(styles, { withTheme: true })(FormPrincipal));
